@@ -34,10 +34,10 @@ export function ReviewStep({ formData }: ReviewStepProps) {
             <strong>Date of Birth:</strong> {formatDate(formData.dateOfBirth)}
           </div>
           <div>
-            <strong>SSN:</strong> {formData.ssn}
+            <strong>Time at Current Address:</strong> {formData.timeAtCurrentAddress || "Not provided"}
           </div>
           <div>
-            <strong>Driver's License:</strong> {formData.driversLicense || "Not provided"}
+            <strong>Reason for Moving:</strong> {formData.reasonForMoving || "Not provided"}
           </div>
         </div>
         <div className="mt-4 text-sm">
@@ -63,37 +63,8 @@ export function ReviewStep({ formData }: ReviewStepProps) {
           <div>
             <strong>Job Title:</strong> {formData.jobTitle || "Not provided"}
           </div>
-        </div>
-      </div>
-
-      {/* Rental History */}
-      <div className="bg-purple-50 p-6 rounded-lg">
-        <h4 className="font-semibold text-purple-800 mb-4">Rental History</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
-            <strong>Previous Address:</strong> {formData.previousAddress || "Not provided"}
-          </div>
-          <div>
-            <strong>Previous Landlord:</strong> {formData.previousLandlord || "Not provided"}
-          </div>
-          <div>
-            <strong>Previous Rent:</strong> ${formData.previousRent || "Not provided"}
-          </div>
-          <div>
-            <strong>Reason for Leaving:</strong> {formData.reasonForLeaving || "Not provided"}
-          </div>
-        </div>
-      </div>
-
-      {/* References */}
-      <div className="bg-orange-50 p-6 rounded-lg">
-        <h4 className="font-semibold text-orange-800 mb-4">References</h4>
-        <div className="space-y-2 text-sm">
-          <div>
-            <strong>Reference 1:</strong> {formData.ref1Name || "Not provided"} - {formData.ref1Phone || "No phone"}
-          </div>
-          <div>
-            <strong>Reference 2:</strong> {formData.ref2Name || "Not provided"} - {formData.ref2Phone || "No phone"}
+            <strong>Employment Length:</strong> {formData.employmentLength || "Not provided"}
           </div>
         </div>
       </div>
@@ -112,20 +83,25 @@ export function ReviewStep({ formData }: ReviewStepProps) {
             <strong>Occupants:</strong> {formData.occupants || "Not provided"}
           </div>
           <div>
-            <strong>Move-in Date:</strong> {formatDate(formData.moveInDate)}
+            <strong>Preferred Move-in Date:</strong> {formatDate(formData.moveInDate)}
+          </div>
+          <div>
+            <strong>Funds at Hand:</strong> {formData.fundsAtHand || "Not provided"}
+          </div>
+          <div>
+            <strong>Intended Lease Time:</strong> {formData.intendedLeaseTime || "Not provided"}
+          </div>
+          <div>
+            <strong>Declared Bankruptcy:</strong> {formData.declaredBankruptcy || "Not specified"}
+          </div>
+          <div>
+            <strong>Payment Method:</strong> {formData.paymentMethod || "Not provided"}
           </div>
         </div>
         {formData.petDetails && (
           <div className="mt-4 text-sm">
             <div>
               <strong>Pet Details:</strong> {formData.petDetails}
-            </div>
-          </div>
-        )}
-        {formData.additionalInfo && (
-          <div className="mt-4 text-sm">
-            <div>
-              <strong>Additional Comments:</strong> {formData.additionalInfo}
             </div>
           </div>
         )}

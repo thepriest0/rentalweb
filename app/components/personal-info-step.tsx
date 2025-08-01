@@ -72,7 +72,7 @@ export function PersonalInfoStep({ formData, updateFormData }: PersonalInfoStepP
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="dateOfBirth" className="text-sm font-medium text-gray-700">
             Date of Birth *
@@ -87,26 +87,14 @@ export function PersonalInfoStep({ formData, updateFormData }: PersonalInfoStepP
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="ssn" className="text-sm font-medium text-gray-700">
-            Social Security Number *
+          <Label htmlFor="timeAtCurrentAddress" className="text-sm font-medium text-gray-700">
+            Time at Current Address
           </Label>
           <Input
-            id="ssn"
-            placeholder="XXX-XX-XXXX"
-            value={formData.ssn}
-            onChange={(e) => handleChange("ssn", e.target.value)}
-            required
-            className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="driversLicense" className="text-sm font-medium text-gray-700">
-            Driver's License Number
-          </Label>
-          <Input
-            id="driversLicense"
-            value={formData.driversLicense}
-            onChange={(e) => handleChange("driversLicense", e.target.value)}
+            id="timeAtCurrentAddress"
+            placeholder="e.g., 2 years 3 months"
+            value={formData.timeAtCurrentAddress}
+            onChange={(e) => handleChange("timeAtCurrentAddress", e.target.value)}
             className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
@@ -164,30 +152,16 @@ export function PersonalInfoStep({ formData, updateFormData }: PersonalInfoStepP
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="timeAtCurrentAddress" className="text-sm font-medium text-gray-700">
-            Time at Current Address
-          </Label>
-          <Input
-            id="timeAtCurrentAddress"
-            placeholder="e.g., 2 years 3 months"
-            value={formData.timeAtCurrentAddress}
-            onChange={(e) => handleChange("timeAtCurrentAddress", e.target.value)}
-            className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="reasonForMoving" className="text-sm font-medium text-gray-700">
-            Reason for Moving
-          </Label>
-          <Input
-            id="reasonForMoving"
-            value={formData.reasonForMoving}
-            onChange={(e) => handleChange("reasonForMoving", e.target.value)}
-            className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="reasonForMoving" className="text-sm font-medium text-gray-700">
+          Reason for Moving
+        </Label>
+        <Input
+          id="reasonForMoving"
+          value={formData.reasonForMoving}
+          onChange={(e) => handleChange("reasonForMoving", e.target.value)}
+          className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+        />
       </div>
     </div>
   )

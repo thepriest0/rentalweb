@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import type { FormData } from "../page"
 
 interface AdditionalInfoStepProps {
@@ -50,17 +51,19 @@ export function AdditionalInfoStep({ formData, updateFormData }: AdditionalInfoS
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="petDetails" className="text-sm font-medium text-gray-700">
-          If you have pets, please describe (type, breed, weight, etc.)
-        </Label>
-        <Textarea
-          id="petDetails"
-          value={formData.petDetails}
-          onChange={(e) => handleChange("petDetails", e.target.value)}
-          className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
-        />
-      </div>
+      {formData.pets === "yes" && (
+        <div className="space-y-2">
+          <Label htmlFor="petDetails" className="text-sm font-medium text-gray-700">
+            If you have pets, please describe (type, breed, weight, etc.)
+          </Label>
+          <Textarea
+            id="petDetails"
+            value={formData.petDetails}
+            onChange={(e) => handleChange("petDetails", e.target.value)}
+            className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
+          />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -78,27 +81,80 @@ export function AdditionalInfoStep({ formData, updateFormData }: AdditionalInfoS
         </div>
         <div className="space-y-2">
           <Label htmlFor="moveInDate" className="text-sm font-medium text-gray-700">
-            Desired Move-in Date
+            Preferred Move-in Date *
           </Label>
           <Input
             id="moveInDate"
             type="date"
             value={formData.moveInDate}
             onChange={(e) => handleChange("moveInDate", e.target.value)}
+            required
+            className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="fundsAtHand" className="text-sm font-medium text-gray-700">
+            How much do you have at hand to secure the property/move in? *
+          </Label>
+          <Input
+            id="fundsAtHand"
+            type="text"
+            placeholder="$"
+            value={formData.fundsAtHand}
+            onChange={(e) => handleChange("fundsAtHand", e.target.value)}
+            required
+            className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="intendedLeaseTime" className="text-sm font-medium text-gray-700">
+            What's your intended time of lease? *
+          </Label>
+          <Input
+            id="intendedLeaseTime"
+            type="text"
+            placeholder="e.g., 12 months"
+            value={formData.intendedLeaseTime}
+            onChange={(e) => handleChange("intendedLeaseTime", e.target.value)}
+            required
             className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="additionalInfo" className="text-sm font-medium text-gray-700">
-          Additional Information or Comments
+        <Label className="text-sm font-medium text-gray-700">Have you ever declared bankruptcy? *</Label>
+        <RadioGroup
+          value={formData.declaredBankruptcy}
+          onValueChange={(value) => handleChange("declaredBankruptcy", value)}
+          className="flex space-x-4"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="yes" id="bankruptcy-yes" />
+            <Label htmlFor="bankruptcy-yes">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="no" id="bankruptcy-no" />
+            <Label htmlFor="bankruptcy-no">No</Label>
+          </div>
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="paymentMethod" className="text-sm font-medium text-gray-700">
+          A refundable application fee of $90 is required to process the reviewing of the form. How do you want to make
+          the payment? (ZELLE, VENMO, PAYPAL, APPLE PAY AND CHIME) Please indicate in the given box. *
         </Label>
         <Textarea
-          id="additionalInfo"
-          value={formData.additionalInfo}
-          onChange={(e) => handleChange("additionalInfo", e.target.value)}
+          id="paymentMethod"
+          value={formData.paymentMethod}
+          onChange={(e) => handleChange("paymentMethod", e.target.value)}
+          required
           className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
+          placeholder="e.g., ZELLE"
         />
       </div>
 
@@ -111,9 +167,18 @@ export function AdditionalInfoStep({ formData, updateFormData }: AdditionalInfoS
             className="mt-1"
           />
           <Label htmlFor="agreement" className="text-sm text-gray-700 leading-relaxed">
-            I certify that the information provided is true and complete to the best of my knowledge. I understand that
-            any false information may result in rejection of this application. I authorize the verification of all
-            information provided and consent to background and credit checks. *
+            By submitting this application you agree:
+            <br />
+            1) The information provided herein is complete and accurate. Providing incomplete and/or false information
+            could result in the rejection of the application.
+            <br />
+            2) Submission of this application does not guarantee a room lease, which is reserved only upon signing of a
+            completed lease agreement by all parties. Additionally, no other agreements, either written or oral, are
+            binding on applicant, owner or owner's agents until the completed lease agreement is signed by all parties.
+            <br />
+            3) Additional information may be required in order to process your application. Our management team will
+            contact you upon receipt of this online application to obtain any additional information necessary to
+            complete the processing of your application. *
           </Label>
         </div>
       </div>

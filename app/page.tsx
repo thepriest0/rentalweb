@@ -8,9 +8,9 @@ import { useToast } from "@/hooks/use-toast"
 import { Loader2, Home, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react"
 import { PersonalInfoStep } from "./components/personal-info-step"
 import { EmploymentStep } from "./components/employment-step"
-import { RentalHistoryStep } from "./components/rental-history-step"
 import { AdditionalInfoStep } from "./components/additional-info-step"
 import { ReviewStep } from "./components/review-step"
+import React from "react"
 
 export interface FormData {
   // Personal Information
@@ -19,8 +19,6 @@ export interface FormData {
   email: string
   phone: string
   dateOfBirth: string
-  ssn: string
-  driversLicense: string
   currentAddress: string
   city: string
   state: string
@@ -35,22 +33,6 @@ export interface FormData {
   employerAddress: string
   jobTitle: string
   employmentLength: string
-  supervisorContact: string
-
-  // Rental History
-  previousAddress: string
-  previousLandlord: string
-  previousLandlordPhone: string
-  previousRent: string
-  reasonForLeaving: string
-
-  // References
-  ref1Name: string
-  ref1Phone: string
-  ref1Relationship: string
-  ref2Name: string
-  ref2Phone: string
-  ref2Relationship: string
 
   // Additional Information
   pets: string
@@ -58,7 +40,10 @@ export interface FormData {
   petDetails: string
   occupants: string
   moveInDate: string
-  additionalInfo: string
+  fundsAtHand: string // New field
+  intendedLeaseTime: string // New field
+  declaredBankruptcy: string // New field
+  paymentMethod: string // New field
   agreement: boolean
 }
 
@@ -68,8 +53,6 @@ const initialFormData: FormData = {
   email: "",
   phone: "",
   dateOfBirth: "",
-  ssn: "",
-  driversLicense: "",
   currentAddress: "",
   city: "",
   state: "",
@@ -82,33 +65,23 @@ const initialFormData: FormData = {
   employerAddress: "",
   jobTitle: "",
   employmentLength: "",
-  supervisorContact: "",
-  previousAddress: "",
-  previousLandlord: "",
-  previousLandlordPhone: "",
-  previousRent: "",
-  reasonForLeaving: "",
-  ref1Name: "",
-  ref1Phone: "",
-  ref1Relationship: "",
-  ref2Name: "",
-  ref2Phone: "",
-  ref2Relationship: "",
   pets: "",
   smoking: "",
   petDetails: "",
   occupants: "",
   moveInDate: "",
-  additionalInfo: "",
+  fundsAtHand: "",
+  intendedLeaseTime: "",
+  declaredBankruptcy: "",
+  paymentMethod: "",
   agreement: false,
 }
 
 const steps = [
   { id: 1, title: "Personal Info", description: "Basic information" },
   { id: 2, title: "Employment", description: "Work & income details" },
-  { id: 3, title: "History & References", description: "Previous rentals & contacts" },
-  { id: 4, title: "Additional Info", description: "Final details" },
-  { id: 5, title: "Review", description: "Confirm & submit" },
+  { id: 3, title: "Additional Info", description: "Final details & agreement" },
+  { id: 4, title: "Review", description: "Confirm & submit" },
 ]
 
 export default function RentalApplication() {
@@ -130,7 +103,6 @@ export default function RentalApplication() {
           formData.email &&
           formData.phone &&
           formData.dateOfBirth &&
-          formData.ssn &&
           formData.currentAddress &&
           formData.city &&
           formData.state &&
@@ -139,9 +111,14 @@ export default function RentalApplication() {
       case 2:
         return !!(formData.employmentStatus && formData.monthlyIncome)
       case 3:
-        return true // Optional fields
-      case 4:
-        return formData.agreement
+        return !!(
+          formData.moveInDate &&
+          formData.fundsAtHand &&
+          formData.intendedLeaseTime &&
+          formData.declaredBankruptcy &&
+          formData.paymentMethod &&
+          formData.agreement
+        )
       default:
         return true
     }
@@ -164,7 +141,8 @@ export default function RentalApplication() {
   }
 
   const handleSubmit = async () => {
-    if (!validateStep(4)) {
+    if (!validateStep(3)) {
+      // Validate the last input step before submission
       toast({
         title: "Please complete the form",
         description: "Make sure all required fields are filled and you've agreed to the terms.",
@@ -175,7 +153,6 @@ export default function RentalApplication() {
 
     setIsSubmitting(true)
     try {
-      // Send the form data directly as an object
       const result = await submitApplication(formData)
       if (result.success) {
         toast({
@@ -211,10 +188,8 @@ export default function RentalApplication() {
       case 2:
         return <EmploymentStep formData={formData} updateFormData={updateFormData} />
       case 3:
-        return <RentalHistoryStep formData={formData} updateFormData={updateFormData} />
-      case 4:
         return <AdditionalInfoStep formData={formData} updateFormData={updateFormData} />
-      case 5:
+      case 4:
         return <ReviewStep formData={formData} />
       default:
         return null
@@ -241,39 +216,42 @@ export default function RentalApplication() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Progress Steps */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-center mb-4">
             {steps.map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                    currentStep > step.id
-                      ? "bg-green-600 text-white"
-                      : currentStep === step.id
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-600"
-                  }`}
-                >
-                  {currentStep > step.id ? <CheckCircle className="h-5 w-5" /> : step.id}
-                </div>
-                <div className="hidden md:block">
-                  <div className={`text-sm font-medium ${currentStep >= step.id ? "text-blue-600" : "text-gray-600"}`}>
-                    {step.title}
-                  </div>
-                  <div className="text-xs text-gray-500">{step.description}</div>
-                </div>
-              </div>
-            ))}
-            {steps.map(
-              (step, index) =>
-                index < steps.length - 1 && (
+              <React.Fragment key={step.id}>
+                <div className="flex items-center flex-shrink-0">
                   <div
-                    key={`line-${step.id}`}
-                    className={`flex-1 h-px mx-4 transition-all ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                      currentStep > step.id
+                        ? "bg-green-600 text-white"
+                        : currentStep === step.id
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
+                    {currentStep > step.id ? <CheckCircle className="h-5 w-5" /> : step.id}
+                  </div>
+                  <div className="hidden md:block ml-3 text-center">
+                    {" "}
+                    {/* Added ml-3 for spacing and text-center */}
+                    <div
+                      className={`text-sm font-medium ${currentStep >= step.id ? "text-blue-600" : "text-gray-600"}`}
+                    >
+                      {step.title}
+                    </div>
+                    <div className="text-xs text-gray-500">{step.description}</div>
+                  </div>
+                </div>
+                {index < steps.length - 1 && (
+                  <div
+                    className={`h-px w-16 mx-2 transition-all ${
+                      /* Fixed width for the line, adjust mx as needed */
                       currentStep > step.id ? "bg-green-600" : "bg-gray-200"
                     }`}
                   ></div>
-                ),
-            )}
+                )}
+              </React.Fragment>
+            ))}
           </div>
         </div>
 

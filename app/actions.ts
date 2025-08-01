@@ -8,8 +8,6 @@ interface ApplicationData {
   email: string
   phone: string
   dateOfBirth: string
-  ssn: string
-  driversLicense: string
   currentAddress: string
   city: string
   state: string
@@ -22,24 +20,15 @@ interface ApplicationData {
   employerAddress: string
   jobTitle: string
   employmentLength: string
-  supervisorContact: string
-  previousAddress: string
-  previousLandlord: string
-  previousLandlordPhone: string
-  previousRent: string
-  reasonForLeaving: string
-  ref1Name: string
-  ref1Phone: string
-  ref1Relationship: string
-  ref2Name: string
-  ref2Phone: string
-  ref2Relationship: string
   pets: string
   smoking: string
   petDetails: string
   occupants: string
   moveInDate: string
-  additionalInfo: string
+  fundsAtHand: string
+  intendedLeaseTime: string
+  declaredBankruptcy: string
+  paymentMethod: string
   agreement: boolean
 }
 
@@ -68,15 +57,25 @@ export async function submitApplication(applicationData: ApplicationData) {
       lastName: applicationData.lastName,
       email: applicationData.email,
       phone: applicationData.phone,
+      dateOfBirth: applicationData.dateOfBirth,
+      currentAddress: applicationData.currentAddress,
+      city: applicationData.city,
+      state: applicationData.state,
+      zipCode: applicationData.zipCode,
       employmentStatus: applicationData.employmentStatus,
       monthlyIncome: applicationData.monthlyIncome,
+      moveInDate: applicationData.moveInDate,
+      fundsAtHand: applicationData.fundsAtHand,
+      intendedLeaseTime: applicationData.intendedLeaseTime,
+      declaredBankruptcy: applicationData.declaredBankruptcy,
+      paymentMethod: applicationData.paymentMethod,
       agreement: applicationData.agreement,
     }
 
     console.log("Required fields check:", requiredFields)
 
     for (const [field, value] of Object.entries(requiredFields)) {
-      if (!value) {
+      if (!value || (typeof value === "string" && value.trim() === "")) {
         console.error(`❌ Missing required field: ${field}`)
         return {
           success: false,
@@ -87,7 +86,7 @@ export async function submitApplication(applicationData: ApplicationData) {
 
     console.log("✅ All required fields present")
 
-    // Test email configuration - FIXED: createTransport instead of createTransporter
+    // Test email configuration
     console.log("Testing email configuration...")
     let transporter
     try {
@@ -154,8 +153,6 @@ export async function submitApplication(applicationData: ApplicationData) {
             <div class="info-row"><span class="label">Email:</span><span class="value">${applicationData.email}</span></div>
             <div class="info-row"><span class="label">Phone:</span><span class="value">${applicationData.phone}</span></div>
             <div class="info-row"><span class="label">Date of Birth:</span><span class="value">${formatDate(applicationData.dateOfBirth)}</span></div>
-            <div class="info-row"><span class="label">SSN:</span><span class="value">${applicationData.ssn}</span></div>
-            <div class="info-row"><span class="label">Driver's License:</span><span class="value">${applicationData.driversLicense || "Not provided"}</span></div>
             <div class="info-row"><span class="label">Current Address:</span><span class="value">${applicationData.currentAddress}</span></div>
             <div class="info-row"><span class="label">City, State, ZIP:</span><span class="value">${applicationData.city}, ${applicationData.state} ${applicationData.zipCode}</span></div>
             <div class="info-row"><span class="label">Time at Current Address:</span><span class="value">${applicationData.timeAtCurrentAddress || "Not provided"}</span></div>
@@ -172,22 +169,6 @@ export async function submitApplication(applicationData: ApplicationData) {
             <div class="info-row"><span class="label">Employer Address:</span><span class="value">${applicationData.employerAddress || "Not provided"}</span></div>
             <div class="info-row"><span class="label">Job Title:</span><span class="value">${applicationData.jobTitle || "Not provided"}</span></div>
             <div class="info-row"><span class="label">Employment Length:</span><span class="value">${applicationData.employmentLength || "Not provided"}</span></div>
-            <div class="info-row"><span class="label">Supervisor Contact:</span><span class="value">${applicationData.supervisorContact || "Not provided"}</span></div>
-          </div>
-
-          <div class="section">
-            <h2>🏘️ Rental History</h2>
-            <div class="info-row"><span class="label">Previous Address:</span><span class="value">${applicationData.previousAddress || "Not provided"}</span></div>
-            <div class="info-row"><span class="label">Previous Landlord:</span><span class="value">${applicationData.previousLandlord || "Not provided"}</span></div>
-            <div class="info-row"><span class="label">Previous Landlord Phone:</span><span class="value">${applicationData.previousLandlordPhone || "Not provided"}</span></div>
-            <div class="info-row"><span class="label">Previous Rent:</span><span class="value">$${applicationData.previousRent || "Not provided"}</span></div>
-            <div class="info-row"><span class="label">Reason for Leaving:</span><span class="value">${applicationData.reasonForLeaving || "Not provided"}</span></div>
-          </div>
-
-          <div class="section">
-            <h2>👥 References</h2>
-            <div class="info-row"><span class="label">Reference 1:</span><span class="value">${applicationData.ref1Name || "Not provided"} - ${applicationData.ref1Phone || "No phone"} (${applicationData.ref1Relationship || "No relationship specified"})</span></div>
-            <div class="info-row"><span class="label">Reference 2:</span><span class="value">${applicationData.ref2Name || "Not provided"} - ${applicationData.ref2Phone || "No phone"} (${applicationData.ref2Relationship || "No relationship specified"})</span></div>
           </div>
 
           <div class="section">
@@ -196,8 +177,11 @@ export async function submitApplication(applicationData: ApplicationData) {
             ${applicationData.petDetails ? `<div class="info-row"><span class="label">Pet Details:</span><span class="value">${applicationData.petDetails}</span></div>` : ""}
             <div class="info-row"><span class="label">Smoking:</span><span class="value">${applicationData.smoking || "Not specified"}</span></div>
             <div class="info-row"><span class="label">Number of Occupants:</span><span class="value">${applicationData.occupants || "Not provided"}</span></div>
-            <div class="info-row"><span class="label">Desired Move-in Date:</span><span class="value">${formatDate(applicationData.moveInDate)}</span></div>
-            ${applicationData.additionalInfo ? `<div class="info-row"><span class="label">Additional Comments:</span><span class="value">${applicationData.additionalInfo}</span></div>` : ""}
+            <div class="info-row"><span class="label">Preferred Move-in Date:</span><span class="value">${formatDate(applicationData.moveInDate)}</span></div>
+            <div class="info-row"><span class="label">Funds to Secure Property:</span><span class="value">${applicationData.fundsAtHand}</span></div>
+            <div class="info-row"><span class="label">Intended Lease Time:</span><span class="value">${applicationData.intendedLeaseTime}</span></div>
+            <div class="info-row"><span class="label">Declared Bankruptcy:</span><span class="value">${applicationData.declaredBankruptcy}</span></div>
+            <div class="info-row"><span class="label">Payment Method:</span><span class="value">${applicationData.paymentMethod}</span></div>
           </div>
 
           <div class="footer">
@@ -217,28 +201,28 @@ PHONE: ${applicationData.phone}
 
 PERSONAL INFORMATION:
 - Date of Birth: ${formatDate(applicationData.dateOfBirth)}
-- SSN: ${applicationData.ssn}
-- Driver's License: ${applicationData.driversLicense || "Not provided"}
 - Current Address: ${applicationData.currentAddress}, ${applicationData.city}, ${applicationData.state} ${applicationData.zipCode}
+- Time at Current Address: ${applicationData.timeAtCurrentAddress || "Not provided"}
+- Reason for Moving: ${applicationData.reasonForMoving || "Not provided"}
 
 EMPLOYMENT INFORMATION:
 - Employment Status: ${applicationData.employmentStatus}
 - Monthly Income: $${applicationData.monthlyIncome}
 - Employer: ${applicationData.employer || "Not provided"}
-
-RENTAL HISTORY:
-- Previous Address: ${applicationData.previousAddress || "Not provided"}
-- Previous Landlord: ${applicationData.previousLandlord || "Not provided"}
-
-REFERENCES:
-- Reference 1: ${applicationData.ref1Name || "Not provided"} - ${applicationData.ref1Phone || "No phone"}
-- Reference 2: ${applicationData.ref2Name || "Not provided"} - ${applicationData.ref2Phone || "No phone"}
+- Employer Address: ${applicationData.employerAddress || "Not provided"}
+- Job Title: ${applicationData.jobTitle || "Not provided"}
+- Employment Length: ${applicationData.employmentLength || "Not provided"}
 
 ADDITIONAL INFO:
 - Pets: ${applicationData.pets || "Not specified"}
 - Pet Details: ${applicationData.petDetails || "None"}
 - Smoking: ${applicationData.smoking || "Not specified"}
-- Move-in Date: ${formatDate(applicationData.moveInDate)}
+- Number of Occupants: ${applicationData.occupants || "Not provided"}
+- Preferred Move-in Date: ${formatDate(applicationData.moveInDate)}
+- Funds to Secure Property: ${applicationData.fundsAtHand}
+- Intended Lease Time: ${applicationData.intendedLeaseTime}
+- Declared Bankruptcy: ${applicationData.declaredBankruptcy}
+- Payment Method: ${applicationData.paymentMethod}
 
 Submitted: ${new Date().toLocaleString()}
     `

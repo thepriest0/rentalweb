@@ -76,40 +76,27 @@ export function EmploymentStep({ formData, updateFormData }: EmploymentStepProps
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="jobTitle" className="text-sm font-medium text-gray-700">
-            Job Title
-          </Label>
-          <Input
-            id="jobTitle"
-            value={formData.jobTitle}
-            onChange={(e) => handleChange("jobTitle", e.target.value)}
-            className="border-gray-200 focus:border-green-500 focus:ring-green-500"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="employmentLength" className="text-sm font-medium text-gray-700">
-            Length of Employment
-          </Label>
-          <Input
-            id="employmentLength"
-            placeholder="e.g., 3 years"
-            value={formData.employmentLength}
-            onChange={(e) => handleChange("employmentLength", e.target.value)}
-            className="border-gray-200 focus:border-green-500 focus:ring-green-500"
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="jobTitle" className="text-sm font-medium text-gray-700">
+          Job Title
+        </Label>
+        <Input
+          id="jobTitle"
+          value={formData.jobTitle}
+          onChange={(e) => handleChange("jobTitle", e.target.value)}
+          className="border-gray-200 focus:border-green-500 focus:ring-green-500"
+        />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="supervisorContact" className="text-sm font-medium text-gray-700">
-          Supervisor Name & Phone
+        <Label htmlFor="employmentLength" className="text-sm font-medium text-gray-700">
+          Length of Employment
         </Label>
         <Input
-          id="supervisorContact"
-          value={formData.supervisorContact}
-          onChange={(e) => handleChange("supervisorContact", e.target.value)}
+          id="employmentLength"
+          placeholder="e.g., 3 years"
+          value={formData.employmentLength}
+          onChange={(e) => handleChange("employmentLength", e.target.value)}
           className="border-gray-200 focus:border-green-500 focus:ring-green-500"
         />
       </div>

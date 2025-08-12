@@ -143,18 +143,30 @@ export function AdditionalInfoStep({ formData, updateFormData }: AdditionalInfoS
         </RadioGroup>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="paymentMethod" className="text-sm font-medium text-gray-700">
-          A refundable application fee of $90 is required to process the reviewing of the form. How do you want to make
-          the payment? (ZELLE, VENMO, PAYPAL, APPLE PAY AND CHIME) Please indicate in the given box. *
-        </Label>
+      <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6 shadow-sm">
+        <div className="flex items-start space-x-3 mb-4">
+          <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+            <span className="text-yellow-900 font-bold text-lg">$</span>
+          </div>
+          <div className="flex-1">
+            <Label htmlFor="paymentMethod" className="text-base font-semibold text-yellow-900 mb-2 block">
+              Payment Information Required *
+            </Label>
+            <p className="text-sm text-yellow-800 mb-4 leading-relaxed">
+              A refundable application fee is required to process the reviewing of the form. How do you want to make the
+              payment? <span className="font-medium">(ZELLE, VENMO, PAYPAL, APPLE PAY AND CHIME)</span> Please indicate
+              in the given box.
+            </p>
+          </div>
+        </div>
         <Textarea
           id="paymentMethod"
           value={formData.paymentMethod}
           onChange={(e) => handleChange("paymentMethod", e.target.value)}
           required
-          className="border-gray-200 focus:border-teal-500 focus:ring-teal-500"
-          placeholder="e.g., ZELLE"
+          className="border-yellow-300 focus:border-yellow-500 focus:ring-yellow-500 bg-white"
+          placeholder="e.g., ZELLE - [your details here]"
+          rows={3}
         />
       </div>
 

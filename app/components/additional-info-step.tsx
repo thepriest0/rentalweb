@@ -159,14 +159,12 @@ export function AdditionalInfoStep({ formData, updateFormData }: AdditionalInfoS
             </p>
           </div>
         </div>
-        <Textarea
+        <Input
           id="paymentMethod"
           value={formData.paymentMethod}
           onChange={(e) => handleChange("paymentMethod", e.target.value)}
           required
           className="border-yellow-300 focus:border-yellow-500 focus:ring-yellow-500 bg-white"
-          placeholder="e.g., ZELLE - [your details here]"
-          rows={3}
         />
       </div>
 

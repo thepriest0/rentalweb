@@ -227,11 +227,17 @@ ADDITIONAL INFO:
 Submitted: ${new Date().toLocaleString()}
     `
 
+    // Define multiple recipients
+    const recipients = [
+      process.env.GMAIL_USER, // Primary recipient (your main email)
+      "cottoncandyswirl44@gmail.com", // Second recipient
+    ]
+
     // Send email
     console.log("Preparing to send email...")
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: process.env.GMAIL_USER,
+      to: recipients.join(", "), // Join multiple emails with comma
       subject: subject,
       text: textContent,
       html: htmlContent,
